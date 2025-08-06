@@ -1,6 +1,6 @@
 import os
 
-dados_restaurantes = [
+restaurantes = [
     {'nome': 'Praça', 'categoria':'Japonesa', 'ativo':False}, 
     {'nome': 'Pizzaria', 'categoria':'Italiana', 'ativo':True},
     {'nome': 'Lanche', 'categoria':'Caseira', 'ativo':True}
@@ -40,17 +40,37 @@ def exibir_subtitulo(texto):
 def cadastrar_novo_restaurante():
     exibir_subtitulo('Cadastro de novos restaurantes')
     nome_do_restaurante = input('Digite o nome do restaurante: ')
-    dados_restaurantes.append(nome_do_restaurante)
+    categoria = input(f'Digite o nome da categoria do restaurante {nome_do_restaurante}: ')
+    dados_do_restaurante = {'nome': nome_do_restaurante, 'categoria': categoria, 'ativo': False}
+    restaurantes.append(dados_do_restaurante)
     print(f'\nO restaurante {nome_do_restaurante} foi cadastrado com sucesso')
     retorno_menu()
 
 def listar_restaurante():
     exibir_subtitulo('Listando restaurantes')
-    for restaurente in dados_restaurantes:
+    for restaurente in restaurantes:
         nome_restaurante = restaurente['nome']
         categoria = restaurente['categoria']
         ativo = restaurente['ativo']
         print(f'- {nome_restaurante} | {categoria} | {ativo}')
+
+    retorno_menu()
+
+def altenar_estado_restaurante():
+    exibir_subtitulo('Alternando estado do restaurante')
+
+    nome_restaurante = input('Digite o nome do restaurante que deseja atlternar o estado: ')
+    restaurante_encontrado = False
+
+    for restaurante in restaurantes:
+        if nome_restaurante == restaurante['nome']:
+            restaurante_encontrado = True
+            restaurante['ativo'] = not restaurante['ativo']
+            mensagem = f'O restaurante {nome_restaurante} foi ativado com sucesso' if restaurante['ativo'] else f'o restaurante {nome_restaurante} foi desativado com sucesso'
+            print(mensagem)
+    if not restaurante_encontrado:
+        print('Restaurante não foi encontrado')
+        
 
     retorno_menu()
 
@@ -63,7 +83,7 @@ def escolher_opcao():
         elif opcao_escolhida == 2:
             listar_restaurante()
         elif opcao_escolhida == 3:
-            print('Ativer restaurante')
+            altenar_estado_restaurante()
         elif opcao_escolhida == 4:
             finalizar_app()
         else:
